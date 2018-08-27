@@ -30,7 +30,6 @@ DROP TABLE IF EXISTS Tv_show;
 CREATE TABLE Tv_show (
     id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(80) NOT NULL,
-    id_genre INT NOT NULL,
     id_producer INT NOT NULL,
     number_of_seasons INT NOT NULL,
     where_to_find VARCHAR(50),
@@ -73,6 +72,7 @@ DROP TABLE IF EXISTS Rel_Tv_show_Actor;
 CREATE TABLE Rel_Tv_show_Actor(
     id_tv_show INT NOT NULL,
     id_actor INT NOT NULL,
+    role VARCHAR(80),
     FOREIGN KEY(id_actor) REFERENCES Actor(id),
     FOREIGN KEY(id_tv_show) REFERENCES Tv_show(id),
     PRIMARY KEY (id_actor, id_tv_show)
