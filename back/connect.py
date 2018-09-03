@@ -1,6 +1,8 @@
 import pymysql
 
-from Flask import Flask 
+from flask import Flask, request, jsonify
+
+import json
 
 class ConnectionHelper:
     def __init__(self, connection):
@@ -23,9 +25,29 @@ connection_options = {
 connection = pymysql.connect(**connection_options)
 
 db = ConnectionHelper(connection)
+cursor = connection.cursor()
 
-app = Flask(_name_)
+app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
     return 'Hello, World!'
+
+@app.route('/users', methods = ['GET', 'POST'])
+def user():
+
+    if  request.method == 'GET':
+        cursor.execute("SELECT * FROM Watcher")
+        #print(cursor.fetchall())
+        return jsonify(cursor.fetchall())
+
+    if request.method == 'POST':
+        # print('JSON: {0}'.format(request.get_json()))
+        a = json.loads(request.data.decode("utf-8"))
+    
+        db.run("INSERT INTO Watcher (name, password) VALUES (%s, %s)", (a["username"], a["password"]))
+        db.run("COMMIT")
+        return  "tudo rodou bunitinho"
+
+
+app.run()
