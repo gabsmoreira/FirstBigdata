@@ -7,9 +7,6 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import Switch from '@material-ui/core/Switch';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormGroup from '@material-ui/core/FormGroup';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 
@@ -28,8 +25,9 @@ const styles = {
 
 class MenuAppBar extends React.Component {
   state = {
-    auth: true,
     anchorEl: null,
+    menuChoice: null,
+    option: "Browse"
   };
 
   handleChange = (event, checked) => {
@@ -40,34 +38,66 @@ class MenuAppBar extends React.Component {
     this.setState({ anchorEl: event.currentTarget });
   };
 
+  handleMenuChoice = event => {
+    this.setState({ menuChoice: event.currentTarget});
+
+  };
+
   handleClose = () => {
     this.setState({ anchorEl: null });
   };
 
+  handleChangeMenuChoice = (event) => {
+    this.setState({ menuChoice: null, option: event.currentTarget.id});
+  };
+
+  handleLogout = () => {
+    this.setState({ auth: false });
+  };
+
   render() {
     const { classes } = this.props;
-    const { auth, anchorEl } = this.state;
+    const  anchorEl = this.state.anchorEl;
+    const menuChoice = this.state.menuChoice
     const open = Boolean(anchorEl);
+    const openMenu = Boolean(menuChoice)
 
     return (
       <div className={classes.root}>
-        <FormGroup>
-          <FormControlLabel
-            control={
-              <Switch checked={auth} onChange={this.handleChange} aria-label="LoginSwitch" />
-            }
-            label={auth ? 'Logout' : 'Login'}
-          />
-        </FormGroup>
         <AppBar position="static">
           <Toolbar>
-            <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+            <IconButton className={classes.menuButton}
+                color="inherit" 
+                aria-label="Menu" 
+                aria-owns={openMenu ? 'menu-choice' : null}
+                aria-haspopup="true"
+                onClick={this.handleMenuChoice}
+                color="inherit">
               <MenuIcon />
             </IconButton>
+
+            <Menu
+              id="menu-choice"
+              anchorEl={menuChoice}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={openMenu}
+              onClose={this.handleClose}>
+                <MenuItem onClick={this.handleChangeMenuChoice} id="Browse">Browse</MenuItem>
+                <MenuItem onClick={this.handleChangeMenuChoice} id="My List">My List</MenuItem>
+              </Menu>
+
+
             <Typography variant="title" color="inherit" className={classes.flex}>
-              Photos
+              {this.state.option}
             </Typography>
-            {auth && (
+            {this.props.auth && (
               <div>
                 <IconButton
                   aria-owns={open ? 'menu-appbar' : null}
@@ -92,7 +122,7 @@ class MenuAppBar extends React.Component {
                   onClose={this.handleClose}
                 >
                   <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-                  <MenuItem onClick={this.handleClose}>My account</MenuItem>
+                  <MenuItem onClick={this.props.handleLogout}>Logout</MenuItem>
                 </Menu>
               </div>
             )}

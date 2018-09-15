@@ -32,8 +32,10 @@ CREATE TABLE Tv_show (
     name VARCHAR(80) NOT NULL,
     id_producer INT NOT NULL,
     number_of_seasons INT NOT NULL,
+    avg_score INT NOT NULL,
     where_to_find VARCHAR(50),
     download_link VARCHAR(200),
+    photo MEDIUMBLOB, 
     FOREIGN KEY(id_producer) REFERENCES Producer(id),
     PRIMARY KEY (id)
     

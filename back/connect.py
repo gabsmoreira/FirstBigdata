@@ -62,5 +62,18 @@ def login():
 		result = 0
 	return jsonify(result)
 
+@app.route('/tvshows', methods = ['GET'])
+def tvshows():
+	print('[BACKEND] GET Tvshows')
+	cursor.execute("SELECT * FROM Tv_show")
+	try:
+		result = cursor.fetchall()
+		print("a: ",result)
+
+	except Exception as err:
+		print("[ERROR]: {}".format(err))
+		result = 0
+	return jsonify(result)	
+
 
 app.run()
