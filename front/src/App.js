@@ -20,6 +20,11 @@ class App extends Component {
 
   }
 
+  componentDidMount = () =>{
+    const user = localStorage.getItem("user");
+    this.setState({auth:user})
+  }
+
   handleChange = name => event => {
     this.setState({
       [name]: event.target.value,
@@ -29,7 +34,6 @@ class App extends Component {
   registerRequest = () => {
     if(this.state.confirmed_password === this.state.password){
       auth.register(this.state.username, this.state.password,(result) => {
-          this.setState({auth: result});
           localStorage.setItem("user", result);
           this.setState({auth:result, username: "", password: "", confirm_password: ""});
 
@@ -39,10 +43,11 @@ class App extends Component {
 
   loginRequest = () => {
     auth.login(this.state.username, this.state.password,(result) => {
-        console.log(result)
-        this.setState({auth: result});
-        localStorage.setItem("user", result);
-        this.setState({auth:result});
+        if(result != 0){
+          console.log(result)
+          localStorage.setItem("user", result);
+          this.setState({auth: result, username: "", password: ""});
+        }
     });
   }
 
@@ -65,6 +70,7 @@ class App extends Component {
           margin="normal"/>
           <TextField
             id="password"
+            type="password"
             label="Password"
             value={this.state.password}
             style={formStyle}
@@ -87,6 +93,7 @@ class App extends Component {
           margin="normal"/>
           <TextField
             id="password"
+            type="password"
             label="Password"
             value={this.state.password}
             style={formStyle}
@@ -95,6 +102,7 @@ class App extends Component {
 
           <TextField
             id="confirmed_password"
+            type="password"
             label="Confirm password"
             value={this.state.confirm_password}
             style={formStyle}
