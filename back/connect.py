@@ -11,7 +11,7 @@ class ConnectionHelper:
     def run(self, query, args=None):
         with self.connection.cursor() as cursor:
             print('Executando query:')
-            print(cursor.mogrify(query, args))  # O que este comando faz?
+            print(cursor.mogrify(query, args))
             cursor.execute(query, args)
             for result in cursor.fetchall():
                 print(result)
