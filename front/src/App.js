@@ -5,23 +5,18 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Button from '@material-ui/core/Button';
 import auth from "../src/auth.js"
-import MediaContainer from "./MediaContainer"
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
-import GridListTileBar from '@material-ui/core/GridListTileBar';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import IconButton from '@material-ui/core/IconButton';
-// import InfoIcon from '@material-ui/icons/Info';
+import MediaContainer from "./components/MediaContainer"
 
 
 
 import {amber500, amber700, grey50, grey500} from '@material-ui/core/colors'
-
+ 
 class App extends Component {
   state ={
-    auth: "bla",
+    auth: null,
     username: "",
     password:"",
+    confirmed_password: ""
 
   }
 
@@ -31,20 +26,24 @@ class App extends Component {
     });
   };
 
-  loginRequest = () => {
-    // auth.login(this.state.username, this.state.password,(result) => {
-    //     this.setState({auth: result});
-    //     localStorage.setItem("user", result);
-    // });
-    this.setState({auth:'bla'});
+  registerRequest = () => {
+    if(this.state.confirmed_password === this.state.password){
+      auth.register(this.state.username, this.state.password,(result) => {
+          this.setState({auth: result});
+          localStorage.setItem("user", result);
+          this.setState({auth:result, username: "", password: "", confirm_password: ""});
+
+      });
+    }
   }
 
   loginRequest = () => {
-    // auth.register(this.state.username, this.state.password,(result) => {
-    //     this.setState({auth: result});
-    //     localStorage.setItem("user", result);
-    // });
-    this.setState({auth:'bla'});
+    auth.login(this.state.username, this.state.password,(result) => {
+        console.log(result)
+        this.setState({auth: result});
+        localStorage.setItem("user", result);
+        this.setState({auth:result});
+    });
   }
 
   handleChangeTab = (event, value) => {
@@ -95,11 +94,11 @@ class App extends Component {
             margin="normal"/>
 
           <TextField
-            id="password"
+            id="confirmed_password"
             label="Confirm password"
-            value={this.state.password}
+            value={this.state.confirm_password}
             style={formStyle}
-            onChange={this.handleChange('password')}
+            onChange={this.handleChange('confirmed_password')}
             margin="normal"/>
           <Button  variant="contained" color="primary" style={styleButton} onClick={this.registerRequest}>Register</Button>
         </Paper>
