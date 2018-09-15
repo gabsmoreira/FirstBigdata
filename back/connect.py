@@ -3,7 +3,7 @@ from flask import Flask, request, jsonify
 import json
 
 class ConnectionHelper:
-    
+
     def __init__(self, connection):
         self.connection = connection
     
@@ -19,7 +19,7 @@ class ConnectionHelper:
 connection_options = {
 	'host': 'localhost',
 	'user': 'root',
-	'password': '1234',
+	'password': '160520',
 	'database': 'fetchflix',    
 }
 connection = pymysql.connect(**connection_options)
