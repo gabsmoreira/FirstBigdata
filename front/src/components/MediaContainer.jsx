@@ -1,13 +1,6 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import logo from '../download.jpeg'
+import Serie from './Serie';
+import auth from '../auth';
 
 
 
@@ -15,69 +8,24 @@ class MediaContainer extends Component {
     constructor(props){
     super(props);
     this.state = {
-      data : [
-        {
-          name: "Tirtoper",
-          producer: "Tirta",
-          img: "./download.jpeg",
-          rating: 3
-        },
-        {
-          name: "Graicer",
-          producer: "Tirta",
-          img: "./download.jpeg",
-          rating: 5
-        },
-        {
-          name: "Graber",
-          producer: "Grabers",
-          img: "./download.jpeg",
-          rating: 5
-        },
-        {
-          name: "Tirtoper",
-          producer: "Tirta",
-          img: "./download.jpeg",
-          rating: 3
-        },
-        {
-          name: "Graicer",
-          producer: "Tirta",
-          img: "./download.jpeg",
-          rating: 5
-        },
-        {
-          name: "Graber",
-          producer: "Grabers",
-          img: "./download.jpeg",
-          rating: 5
-        },
-        {
-          name: "Tirtoper",
-          producer: "Tirta",
-          img: "./download.jpeg",
-          rating: 3
-        },
-        {
-          name: "Graicer",
-          producer: "Tirta",
-          img: "./download.jpeg",
-          rating: 5
-        },
-        {
-          name: "Graber",
-          producer: "Grabers",
-          img: "./download.jpeg",
-          rating: 5
-        },
-
-      ]
-
+      data: []
     }
   }
 
-  
-  
+  componentWillMount = () =>{
+    auth.getList((result) =>{
+      console.log('A: ' + result[1])
+      // const json = {'id': result[0],
+      //               'name': result[1],
+      //               'idProducer': result[2],
+      //               'numberSeasons': result[3],
+      //               'rating': result[4],
+      //               'find': result[5],
+      //               'download': result[6]}
+      // console.log(typeof(result))  
+      this.setState({data: result})
+    })
+  }
 
     render() {
       const styles = {
@@ -89,47 +37,23 @@ class MediaContainer extends Component {
         },
       };
 
-
       return(
-        this.state.data.map(film =>{
+        
+        this.state.data.map(show =>{
+          console.log(show)
+          const json = {'id': show[0],
+                    'name': show[1],
+                    'idProducer': show[2],
+                    'numberSeasons': show[3],
+                    'find': show[4],
+                    'link': show[5]}
           return (
-            <Card >
-              {/* <CardMedia
-                height="140"
-                width="120"
-                image={film.img}
-                title="Contemplative Reptile"
-              /> */}
-              <img src={logo} width="100%"/>
-              <CardContent>
-                <Typography gutterBottom variant="headline" component="h2">
-                  {film.name}
-                </Typography>
-                <Typography component="h3">
-                  Rating: {film.rating}
-                </Typography>
-                <Typography gutterBottom variant="headline" component="h3">
-                  Producer: {film.producer}
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button size="small" color="primary">
-                  Download Link
-                </Button>
-              </CardActions>
-            </Card>
-            
+            <Serie film={json} />
           );
         })
 
       );
-
-      
-        
-    
     }
-
-    
 }
 
 export default MediaContainer;

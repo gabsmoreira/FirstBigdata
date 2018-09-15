@@ -17,13 +17,18 @@ class App extends Component {
     auth: null,
     username: "",
     password:"",
-    confirmed_password: ""
+    confirmed_password: "",
+    authConfirmed: false,
+    series: null
 
   }
 
   componentDidMount = () =>{
     const user = localStorage.getItem("user");
     this.setState({auth:user})
+    if(user != null){
+      this.setState({authConfirmed:true})
+    }
   }
 
   handleChange = name => event => {
@@ -36,7 +41,7 @@ class App extends Component {
     if(this.state.confirmed_password === this.state.password){
       auth.register(this.state.username, this.state.password,(result) => {
           localStorage.setItem("user", result);
-          this.setState({auth:result, username: "", password: "", confirm_password: ""});
+          this.setState({auth:result, username: "", password: "", confirm_password: "", authConfirmed:true});
 
       });
     }
@@ -47,7 +52,7 @@ class App extends Component {
         if(result != 0){
           console.log(result)
           localStorage.setItem("user", result);
-          this.setState({auth: result, username: "", password: ""});
+          this.setState({auth: result, username: "", password: "", authConfirmed:true});
         }
     });
   }
@@ -56,7 +61,13 @@ class App extends Component {
     this.setState({ value });
   };
 
-  
+  handleLogout = () => {
+    this.setState({auth: null, authConfirmed: false})
+  }
+
+  listSeriesRequest = () => {
+    
+  }
 
   renderLogin() {
     const loginf = () => {
@@ -114,10 +125,6 @@ class App extends Component {
       )
     }
 
-    
-
-
-
     const style = {
       backgroundColor: grey50,
       textAlign: 'center',
@@ -161,9 +168,16 @@ class App extends Component {
   renderApp(){
     return(
       <div >
-      <MenuAppBar />
+      <MenuAppBar auth={this.state.authConfirmed} handleLogout={this.handleLogout}/>
+
+      <TextField
+          id="with-placeholder"
+          label="With placeholder"
+          placeholder="Placeholder"
+          margin="normal"
+        />
         <div style={{padding:20, display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gridGap: '10px', gridAutoRows: 'minMax(100px, auto)'}}>
-          <MediaContainer   /> 
+          <MediaContainer /> 
         </div>
 
       </div>
