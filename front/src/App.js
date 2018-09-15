@@ -10,6 +10,7 @@ import MediaContainer from "./components/MediaContainer"
 
 
 import {amber500, amber700, grey50, grey500} from '@material-ui/core/colors'
+import MenuAppBar from './components/MenuAppBar';
  
 class App extends Component {
   state ={
@@ -160,6 +161,7 @@ class App extends Component {
   renderApp(){
     return(
       <div >
+      <MenuAppBar />
         <div style={{padding:20, display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gridGap: '10px', gridAutoRows: 'minMax(100px, auto)'}}>
           <MediaContainer   /> 
         </div>
