@@ -18,12 +18,16 @@ INSERT INTO Producer(id, name) VALUES(2, 'Netflix');
 INSERT INTO Producer(id, name) VALUES(3, 'BBC');
 INSERT INTO Producer(id, name) VALUES(4, 'ABC');
 
-INSERT INTO Tv_show(id, name, id_producer, number_of_seasons, avg_score, where_to_find, download_link) VALUES(1,'Rico e Morte', 2, 4, 0, 'Netflix', 'www.baixaki.com/virus666');
-INSERT INTO Tv_show(id, name, id_producer, number_of_seasons, avg_score, where_to_find, download_link) VALUES(2,'Jogo das Cadeiras', 1, 8, 0, 'HBO Go', 'www.baixaki.com/virus666');
-INSERT INTO Tv_show(id, name, id_producer, number_of_seasons, avg_score, where_to_find, download_link) VALUES(3,'98 brooklings', 1, 2, 0, 'Netflix', 'www.baixaki.com/virus666');
-INSERT INTO Tv_show(id, name, id_producer, number_of_seasons, avg_score, where_to_find, download_link) VALUES(4,'Anatomia de Cinza', 2, 8, 0, 'HBO Go', 'www.baixaki.com/virus666');
-INSERT INTO Tv_show(id, name, id_producer, number_of_seasons, avg_score, where_to_find, download_link) VALUES(5,'Espelho Preto', 3, 5, 0, 'HBO Go', 'www.baixaki.com/virus666');
-INSERT INTO Tv_show(id, name, id_producer, number_of_seasons, avg_score, where_to_find, download_link) VALUES(6,'Quimica do mal', 1, 1, 0, 'HBO Go', 'www.baixaki.com/virus666');
+-- Comando para ver onde devem estar as imagens
+-- SELECT @@secure_file_priv
+
+
+INSERT INTO Tv_show(id, name, id_producer, number_of_seasons, avg_score, where_to_find, download_link, photo) VALUES(1,'Rico e Morte', 2, 4, 0, 'Netflix', 'www.baixaki.com/virus666', LOAD_FILE('/var/lib/mysql-files/got.jpg') );
+INSERT INTO Tv_show(id, name, id_producer, number_of_seasons, avg_score, where_to_find, download_link, photo) VALUES(2,'Jogo das Cadeiras', 1, 8, 0, 'HBO Go', 'www.baixaki.com/virus666', LOAD_FILE('/var/lib/mysql-files/got.jpg') );
+INSERT INTO Tv_show(id, name, id_producer, number_of_seasons, avg_score, where_to_find, download_link, photo) VALUES(3,'98 brooklings', 1, 2, 0, 'Netflix', 'www.baixaki.com/virus666',LOAD_FILE('/var/lib/mysql-files/got.jpg') );
+INSERT INTO Tv_show(id, name, id_producer, number_of_seasons, avg_score, where_to_find, download_link, photo) VALUES(4,'Anatomia de Cinza', 2, 8, 0, 'HBO Go', 'www.baixaki.com/virus666', LOAD_FILE('/var/lib/mysql-files/got.jpg') );
+INSERT INTO Tv_show(id, name, id_producer, number_of_seasons, avg_score, where_to_find, download_link, photo) VALUES(5,'Espelho Preto', 3, 5, 0, 'HBO Go', 'www.baixaki.com/virus666', LOAD_FILE('/var/lib/mysql-files/got.jpg') );
+INSERT INTO Tv_show(id, name, id_producer, number_of_seasons, avg_score, where_to_find, download_link, photo) VALUES(6,'Quimica do mal', 1, 1, 0, 'HBO Go', 'www.baixaki.com/virus666', LOAD_FILE('/var/lib/mysql-files/got.jpg') );
 
 
 INSERT INTO Watcher(id, name) VALUES(1, 'Graber');
@@ -57,4 +61,4 @@ INSERT INTO Rel_Tv_show_Actor(id_tv_show, id_actor, role) VALUES(5, 7, 'Um iphon
 INSERT INTO Rel_Tv_show_Actor(id_tv_show, id_actor, role) VALUES(6, 6, 'Walter Branco');
 
 
-select avg(score) from Rel_Tv_show_Watcher where id_tvshow = <id_tvshow>
+-- select avg(score) from Rel_Tv_show_Watcher where id_tvshow = <id_tvshow>
