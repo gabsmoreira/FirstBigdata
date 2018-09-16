@@ -15,9 +15,9 @@ end//
 DELIMITER ;
 
 INSERT INTO Genre(id, name) VALUES(1, 'Terror');
-INSERT INTO Genre(id, name) VALUES(2, 'Ficção Científica');
-INSERT INTO Genre(id, name) VALUES(3, 'Ação');
-INSERT INTO Genre(id, name) VALUES(4, 'Comédia');
+INSERT INTO Genre(id, name) VALUES(2, 'Scientific Ficction');
+INSERT INTO Genre(id, name) VALUES(3, 'Action');
+INSERT INTO Genre(id, name) VALUES(4, 'Comedy');
 
 INSERT INTO Actor(id, name, age) VALUES(1, 'Albert Hoffman', 13);
 INSERT INTO Actor(id, name, age) VALUES(2, 'Edward Take', 67);
