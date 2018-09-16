@@ -1,5 +1,19 @@
 USE fetchflix;
 
+
+DROP TRIGGER IF EXISTS upadate_average;
+DELIMITER //
+
+CREATE TRIGGER update_average AFTER INSERT ON Rel_Tv_show_Watcher
+for each row
+begin
+SELECT AVG(score) INTO @media FROM Rel_Tv_show_Watcher WHERE id_tv_show = new.id_tv_show;
+UPDATE Tv_show SET avg_score = @media WHERE id = new.id_tv_show;
+
+end//
+
+DELIMITER ;
+
 INSERT INTO Genre(id, name) VALUES(1, 'Terror');
 INSERT INTO Genre(id, name) VALUES(2, 'Ficção Científica');
 INSERT INTO Genre(id, name) VALUES(3, 'Ação');
@@ -35,12 +49,12 @@ INSERT INTO Watcher(id, name) VALUES(2, 'Tirtop');
 INSERT INTO Watcher(id, name) VALUES(3, 'Forbas');
 INSERT INTO Watcher(id, name) VALUES(4, 'Phalafel');
 
-INSERT INTO Rel_Tv_show_Watcher(id_watcher, id_tv_show, score) VALUES(1,1, 5);
-INSERT INTO Rel_Tv_show_Watcher(id_watcher, id_tv_show, score) VALUES(2, 4, 4);
-INSERT INTO Rel_Tv_show_Watcher(id_watcher, id_tv_show, score) VALUES(2, 6, 2);
-INSERT INTO Rel_Tv_show_Watcher(id_watcher, id_tv_show, score) VALUES(2, 2, 3);
-INSERT INTO Rel_Tv_show_Watcher(id_watcher, id_tv_show, score) VALUES(3, 3, 5);
-INSERT INTO Rel_Tv_show_Watcher(id_watcher, id_tv_show, score) VALUES(1, 4, 4);
+INSERT INTO Rel_Tv_show_Watcher(id_watcher, id_tv_show, score) VALUES(1, 1, 5);
+INSERT INTO Rel_Tv_show_Watcher(id_watcher, id_tv_show, score) VALUES(2, 4, 5);
+INSERT INTO Rel_Tv_show_Watcher(id_watcher, id_tv_show, score) VALUES(2, 6, 1);
+INSERT INTO Rel_Tv_show_Watcher(id_watcher, id_tv_show, score) VALUES(1, 6, 3);
+INSERT INTO Rel_Tv_show_Watcher(id_watcher, id_tv_show, score) VALUES(3, 1, 0);
+INSERT INTO Rel_Tv_show_Watcher(id_watcher, id_tv_show, score) VALUES(1, 4, 1);
 
 INSERT INTO Rel_Tv_show_Genre(id_genre, id_tv_show) VALUES(4, 1);
 INSERT INTO Rel_Tv_show_Genre(id_genre, id_tv_show) VALUES(2, 1);

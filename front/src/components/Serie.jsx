@@ -11,7 +11,14 @@ import IconButton from '@material-ui/core/IconButton';
 
 
 
+// var iconv = require('iconv');
 
+// function toUTF8(body) {
+//   // convert from iso-8859-1 to utf-8
+//   var ic = new iconv.Iconv('iso-8859-1', 'utf-8');
+//   var buf = ic.convert(body);
+//   return buf.toString('utf-8');
+// }
 
 class Serie extends Component {
     constructor(props){
@@ -43,10 +50,14 @@ class Serie extends Component {
         button: {
         }
       };
+        //const imagem = this.props.film.image.toString('utf-8')
+        // var i = new Blob(this.props.film.image, {type: "image/jpg;charset=ISO-8859-1"})
+        // window.URL.createObjectURL(i)
 
       return(
         <Card >
             <img src={logo} width="100%"/>
+            {/* <img src={"data:image/jpg;base64," + i} /> */}
             <CardContent>
             <Typography gutterBottom variant="headline" component="h2">
                 {this.props.film.name}

@@ -14,7 +14,7 @@ class MediaContainer extends Component {
 
   componentWillMount = () =>{
     auth.getList((result) =>{
-      console.log('A: ' + result[1])
+      // console.log('A: ' + result[1])
       // const json = {'id': result[0],
       //               'name': result[1],
       //               'idProducer': result[2],
@@ -40,13 +40,15 @@ class MediaContainer extends Component {
       return(
         
         this.state.data.map(show =>{
-          console.log(show)
+          // console.log(show[7])
           const json = {'id': show[0],
                     'name': show[1],
                     'idProducer': show[2],
                     'numberSeasons': show[3],
-                    'find': show[4],
-                    'link': show[5]}
+                    'score': show[4],
+                    'find': show[5],
+                    'link': show[6],
+                    'image': show[7]}
           return (
             <Serie film={json} />
           );

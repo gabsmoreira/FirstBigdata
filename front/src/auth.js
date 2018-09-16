@@ -4,7 +4,6 @@ export default window.auth = {
 				const baseUrl ='http://localhost:5000';
 				const headers = new Headers();
 				headers.append('Content-Type', 'application/json');
-
 				fetch(baseUrl + '/login', {
 						method: 'POST',
 						headers,

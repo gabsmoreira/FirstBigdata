@@ -1,6 +1,8 @@
 import pymysql
 from flask import Flask, request, jsonify
 import json
+import io
+import base64
 
 class ConnectionHelper:
 
@@ -28,6 +30,10 @@ db = ConnectionHelper(connection)
 cursor = connection.cursor()
 
 app = Flask(__name__)
+
+def write_file(data, filename):
+    with open(filename, 'wb') as f:
+        f.write(data)
 
 @app.route('/')
 def hello_world():
@@ -65,15 +71,30 @@ def login():
 @app.route('/tvshows', methods = ['GET'])
 def tvshows():
 	print('[BACKEND] GET Tvshows')
+	
 	cursor.execute("SELECT * FROM Tv_show")
 	try:
 		result = cursor.fetchall()
-		print("a: ",result)
+		# print("a: ",result)
+		result_sem_blob = []
+		blobs = []
+		for i in range(len(result)):
+			print("a: ", result[i][0:7])
+			# blobs.append(base64.b64encode(result[i][7]))
+			blobs.append(json.dumps(result[i][7].decode("utf-16")))
+			# blobs.append(io.BytesIO(result[i][7]))
+			result_sem_blob.append(result[i][0:7])
+			write_file(result[i][7].decode("utf-8"), filename)
+		# print(blobs[0])
 
+		for i in range(len(result)):
+			result_sem_blob[i] = result_sem_blob[i] + (blobs[i],)
+		
 	except Exception as err:
 		print("[ERROR]: {}".format(err))
 		result = 0
-	return jsonify(result)	
+	return jsonify(result_sem_blob)
 
+	# json.dumps(x.decode("utf-8"))
 
 app.run()
