@@ -12,7 +12,18 @@ class MediaContainer extends Component {
     }
   }
 
+  componentWillReceiveProps = (nextProps) => {
+    console.log(nextProps)
+    this.props = nextProps
+    if(nextProps.update == true){
+      auth.search(this.props.search, this.props.genre, (result) => {
+        this.setState({data: result})
+      })
+    }
+  }
+
   componentWillMount = () =>{
+    console.log(this.props.search, this.props.genre)
     auth.getList((result) =>{
       // console.log('A: ' + result[1])
       // const json = {'id': result[0],

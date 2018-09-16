@@ -6,12 +6,20 @@ import Tab from '@material-ui/core/Tab';
 import Button from '@material-ui/core/Button';
 import auth from "../src/auth.js"
 import MediaContainer from "./components/MediaContainer"
+import Icon from '@material-ui/core/Icon';
 
 
 
-import {amber500, amber700, grey50, grey500} from '@material-ui/core/colors'
+
+import {amber500, amber700, grey50, grey500} from '@material-ui/core/colors';
 import MenuAppBar from './components/MenuAppBar';
- 
+
+var genres = [{'key': 1, 'value': "Terror" },
+              {'key': 2, 'value': "Science Fiction"},
+              {'key': 3, 'value': 'Action'},
+              {'key': 4, 'value': 'Comedy'},
+              {'key': 5, 'value': 'All'}
+            ]
 class App extends Component {
   state ={
     auth: null,
@@ -19,11 +27,14 @@ class App extends Component {
     password:"",
     confirmed_password: "",
     authConfirmed: false,
-    series: null
+    series: null,
+    search: null,
+    genre: "All",
+    updateComponent: false
 
   }
 
-  componentDidMount = () =>{
+  componentDidMount = () => {
     const user = localStorage.getItem("user");
     this.setState({auth:user})
     if(user != null){
@@ -67,6 +78,18 @@ class App extends Component {
 
   listSeriesRequest = () => {
     
+  }
+
+  handleChange = name => event => {
+    this.setState({
+      [name]: event.target.value,  updateComponent: false
+    });
+
+  };
+
+  searchShows = () => {
+    this.setState({updateComponent: true})
+    // this.setState({search: "", genre: ""})
   }
 
   renderLogin() {
@@ -145,6 +168,7 @@ class App extends Component {
     };
 
     const { value } = this.state;
+
     return (
       
       <div className="LoginForm row">
@@ -155,6 +179,7 @@ class App extends Component {
       <Tab label="Register" />
       </Tabs>
 
+
       {value === 0 && loginf()}
       {value === 1 && registerf()}
 
@@ -162,32 +187,60 @@ class App extends Component {
       </div>
       </div>
 
-    );
-  }
-  
-  renderApp(){
-    return(
-      <div >
-      <MenuAppBar auth={this.state.authConfirmed} handleLogout={this.handleLogout}/>
+);
+}
 
-      <TextField
-          id="with-placeholder"
-          label="With placeholder"
-          placeholder="Placeholder"
-          margin="normal"
+renderApp(){
+  return(
+    <div >
+      <MenuAppBar auth={this.state.authConfirmed} handleLogout={this.handleLogout}/>
+      <div style={{marginLeft:'5%',
+        marginRight:'5%'}}>
+
+        <TextField
+          id="error"
+          placeholder="Search"
+          value={this.state.search}
+          onChange={this.handleChange('search')}
+          style={{marginRight: 50}}
+          // wish = {plz no two lines, thx}
         />
+        <TextField
+          id="select-currency-native"
+          select
+          value={this.state.genre}
+          onChange={this.handleChange('genre')}
+          SelectProps={{
+            native: true,
+          }}
+          helperText="Please select the genre"
+          margin="normal"
+          style={{height: "50%"}}
+          >
+          {genres.map(option => (
+            <option key={option.value} value={option.value}>
+              {option.value}
+            </option>
+          ))}
+        </TextField>
+
+        <Button variant="contained" color="primary" style={{marginLeft:"2%"}} onClick={this.searchShows} >
+          Search
+        </Button>
+        </div>
+
         <div style={{padding:20, display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gridGap: '10px', gridAutoRows: 'minMax(100px, auto)'}}>
-          <MediaContainer /> 
+          <MediaContainer search={this.state.search} genre={this.state.genre} update={this.state.updateComponent}/> 
         </div>
 
       </div>
     );
   }
-
+  
   render(){
-      if(this.state.auth === null || this.state.auth === 'undefined'){
-        return(
-          this.renderLogin()
+    if(this.state.auth === null || this.state.auth === 'undefined'){
+      return(
+        this.renderLogin()
         );
       }
       else{

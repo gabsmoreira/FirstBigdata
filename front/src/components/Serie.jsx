@@ -4,28 +4,47 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import logo from '../download.jpeg'
 import StarRatingComponent from 'react-star-rating-component';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import IconButton from '@material-ui/core/IconButton';
+import ResponsiveDialog from "./ResponsiveDialog"
 
 
 
-// var iconv = require('iconv');
-
-// function toUTF8(body) {
-//   // convert from iso-8859-1 to utf-8
-//   var ic = new iconv.Iconv('iso-8859-1', 'utf-8');
-//   var buf = ic.convert(body);
-//   return buf.toString('utf-8');
-// }
 
 class Serie extends Component {
     constructor(props){
     super(props);
     this.state = {
-        rating: 3
+        rating: this.props.film.score,
+        logo: "",
+        moreInfo: false
     }
+  }
+  
+    componentWillMount = () => {
+        console.log(this.props.film.name);
+        switch (this.props.film.name){
+            case "Rico e Morte":
+                this.state.logo = require("../img/rickandmorty.jpg")
+                break;
+            case "Jogo das Cadeiras":
+                this.state.logo = require("../img/got.jpg")
+                break;
+            case "98 brooklings":
+                this.state.logo = require("../img/99.jpg")
+                break;
+            case "Anatomia de Cinza":
+            this.state.logo = require("../img/greys.jpg")
+                break;
+            case "Espelho Preto":
+                this.state.logo = require("../img/blackmirror.jpg")
+                break;
+            case "Quimica do mal":
+                this.state.logo = require("../img/breakingbad.jpg")
+                break;
+
+      }
   }
 
   handleRating = (value) =>{
@@ -34,6 +53,12 @@ class Serie extends Component {
       // fazer request para mudar rating da serie
 
   }
+
+  onClickImage = () => {
+      this.setState({moreInfo: true})
+
+  }
+
 
     render() {
       const styles = {
@@ -55,8 +80,8 @@ class Serie extends Component {
         // window.URL.createObjectURL(i)
 
       return(
-        <Card >
-            <img src={logo} width="100%"/>
+        <Card style={{height:"100%", width:"100%"}}>
+            <img src={this.state.logo} width="100%" onClick={this.onClickImage}/>
             {/* <img src={"data:image/jpg;base64," + i} /> */}
             <CardContent>
             <Typography gutterBottom variant="headline" component="h2">
@@ -78,6 +103,7 @@ class Serie extends Component {
                 style={styles.stars}
                 onStarClick = {this.handleRating}
               />
+              <ResponsiveDialog open={this.state.moreInfo}/>
         </Card>
       );
     }

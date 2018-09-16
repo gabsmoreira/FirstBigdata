@@ -35,7 +35,7 @@ CREATE TABLE Tv_show (
     avg_score INT NOT NULL,
     where_to_find VARCHAR(50),
     download_link VARCHAR(200),
-    photo mediumblob not null, 
+    photo mediumblob, 
     FOREIGN KEY(id_producer) REFERENCES Producer(id),
     PRIMARY KEY (id)
     
