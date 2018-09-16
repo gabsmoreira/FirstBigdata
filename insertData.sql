@@ -15,7 +15,7 @@ end//
 DELIMITER ;
 
 INSERT INTO Genre(id, name) VALUES(1, 'Terror');
-INSERT INTO Genre(id, name) VALUES(2, 'Scientific Ficction');
+INSERT INTO Genre(id, name) VALUES(2, 'Scientific Fiction');
 INSERT INTO Genre(id, name) VALUES(3, 'Action');
 INSERT INTO Genre(id, name) VALUES(4, 'Comedy');
 
