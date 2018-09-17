@@ -7,7 +7,6 @@ import Typography from '@material-ui/core/Typography';
 import StarRatingComponent from 'react-star-rating-component';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import IconButton from '@material-ui/core/IconButton';
-import ResponsiveDialog from "./ResponsiveDialog"
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';

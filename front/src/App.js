@@ -30,7 +30,9 @@ class App extends Component {
     series: null,
     search: null,
     genre: "All",
-    updateComponent: false
+    updateComponent: false,
+    mode: "Browse",
+    menuShow: false
 
   }
 
@@ -90,6 +92,13 @@ class App extends Component {
   searchShows = () => {
     this.setState({updateComponent: true})
     // this.setState({search: "", genre: ""})
+  }
+
+  onChangeMode = (event) => {
+    console.log(event.currentTarget.id)
+    this.setState({mode: event.currentTarget.id})
+    this.setState({menuShow: false})
+    // this.setState({mode:})
   }
 
   renderLogin() {
@@ -193,45 +202,68 @@ class App extends Component {
 renderApp(){
   return(
     <div >
-      <MenuAppBar auth={this.state.authConfirmed} handleLogout={this.handleLogout}/>
-      <div style={{marginLeft:'5%',
-        marginRight:'5%'}}>
+      <MenuAppBar auth={this.state.authConfirmed} menu={this.state.menuShow} handleLogout={this.handleLogout} mode={this.state.mode} onChangeMode={this.onChangeMode}/>
+      {this.state.mode === "Browse"?
+        <div>
+        <div style={{marginLeft:'5%',
+          marginRight:'5%'}}>
+  
+          
+  
+          <TextField
+            id="error"
+            placeholder="Search"
+            value={this.state.search}
+            onChange={this.handleChange('search')}
+            style={{marginRight: 50}}
+            // wish = {plz no two lines, thx}
+          />
+          <TextField
+            id="select-currency-native"
+            select
+            value={this.state.genre}
+            onChange={this.handleChange('genre')}
+            SelectProps={{
+              native: true,
+            }}
+            helperText="Please select the genre"
+            margin="normal"
+            style={{height: "50%"}}
+            >
+            {genres.map(option => (
+              <option key={option.value} value={option.value}>
+                {option.value}
+              </option>
+            ))}
+          </TextField>
+  
+          <Button variant="contained" color="primary" style={{marginLeft:"2%"}} onClick={this.searchShows} >
+            Search
+          </Button>
+          </div>
+  
+          <div style={{padding:20, display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gridGap: '10px', gridAutoRows: 'minMax(100px, auto)'}}>
+            <MediaContainer search={this.state.search} genre={this.state.genre} update={this.state.updateComponent}/> 
+          </div>
+          </div>
+      :
+          <div>
+          <div style={{marginLeft:'5%',
+            marginRight:'5%'}}>
 
-        <TextField
-          id="error"
-          placeholder="Search"
-          value={this.state.search}
-          onChange={this.handleChange('search')}
-          style={{marginRight: 50}}
-          // wish = {plz no two lines, thx}
-        />
-        <TextField
-          id="select-currency-native"
-          select
-          value={this.state.genre}
-          onChange={this.handleChange('genre')}
-          SelectProps={{
-            native: true,
-          }}
-          helperText="Please select the genre"
-          margin="normal"
-          style={{height: "50%"}}
-          >
-          {genres.map(option => (
-            <option key={option.value} value={option.value}>
-              {option.value}
-            </option>
-          ))}
-        </TextField>
-
-        <Button variant="contained" color="primary" style={{marginLeft:"2%"}} onClick={this.searchShows} >
-          Search
-        </Button>
-        </div>
+          </div>
 
         <div style={{padding:20, display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gridGap: '10px', gridAutoRows: 'minMax(100px, auto)'}}>
-          <MediaContainer search={this.state.search} genre={this.state.genre} update={this.state.updateComponent}/> 
+          <MediaContainer search={""} genre={""} update={this.state.updateComponent}/> 
         </div>
+        </div>
+      
+      
+      
+      
+      }
+      
+      
 
       </div>
     );
