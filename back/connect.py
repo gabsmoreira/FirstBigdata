@@ -75,23 +75,9 @@ def tvshows():
 	print('[BACKEND] GET Tvshows')
 	cursor.execute("use fetchflix;")
 	print("use fetflix")
-	cursor.execute("DROP TABLE IF EXISTS temp;")
+	#cursor.execute("DROP TABLE IF EXISTS temp;")
 	print("criou tabela")
-	cursor.execute("""
-	CREATE TEMPORARY TABLE temp
-	SELECT 
-		Tv_show.id, Tv_show.name, Producer.name as 'producer', group_concat(' ', Genre.name) as 'genres',
-		Tv_show.number_of_seasons, Tv_show.avg_score, Tv_show.where_to_find, Tv_show.download_link, Tv_show.photo
-	FROM
-		Producer JOIN
-		Tv_show ON Producer.id = Tv_show.id_producer JOIN
-		Rel_Tv_show_Genre ON Tv_show.id = Rel_Tv_show_Genre.id_tv_show JOIN
-		Genre ON Genre.id = Rel_Tv_show_Genre.id_genre
-
-	GROUP BY
-		Tv_show.id
-	;
-	""");
+	cursor.execute("call create_temp();")
 	print("criou tabela")
 	cursor.execute("SELECT @@sql_mode into @modeatual;")
 	cursor.execute("SET sql_mode = '';")
@@ -141,21 +127,7 @@ def search():
 	print("use fetflix")
 	cursor.execute("DROP TABLE IF EXISTS temp;")
 	print("criou tabela")
-	cursor.execute("""
-	CREATE TEMPORARY TABLE temp
-	SELECT 
-		Tv_show.id, Tv_show.name, Producer.name as 'producer', group_concat(' ', Genre.name) as 'genres',
-		Tv_show.number_of_seasons, Tv_show.avg_score, Tv_show.where_to_find, Tv_show.download_link, Tv_show.photo
-	FROM
-		Producer JOIN
-		Tv_show ON Producer.id = Tv_show.id_producer JOIN
-		Rel_Tv_show_Genre ON Tv_show.id = Rel_Tv_show_Genre.id_tv_show JOIN
-		Genre ON Genre.id = Rel_Tv_show_Genre.id_genre
-
-	GROUP BY
-		Tv_show.id
-	;
-	""");
+	cursor.execute("call create_temp();")
 	print("criou tabela")
 	cursor.execute("SELECT @@sql_mode into @modeatual;")
 	cursor.execute("SET sql_mode = '';")
@@ -206,23 +178,9 @@ def seen():
 	a = json.loads(request.data.decode("utf-8"))
 	cursor.execute("use fetchflix;")
 	# print("use fetflix")
-	cursor.execute("DROP TABLE IF EXISTS temp;")
+	#cursor.execute("DROP TABLE IF EXISTS temp;")
 	# print("criou tabela")
-	cursor.execute("""
-	CREATE TEMPORARY TABLE temp
-	SELECT 
-		Tv_show.id, Tv_show.name, Producer.name as 'producer', group_concat(' ', Genre.name) as 'genres',
-		Tv_show.number_of_seasons, Tv_show.avg_score, Tv_show.where_to_find, Tv_show.download_link, Tv_show.photo
-	FROM
-		Producer JOIN
-		Tv_show ON Producer.id = Tv_show.id_producer JOIN
-		Rel_Tv_show_Genre ON Tv_show.id = Rel_Tv_show_Genre.id_tv_show JOIN
-		Genre ON Genre.id = Rel_Tv_show_Genre.id_genre
-
-	GROUP BY
-		Tv_show.id
-	;
-	""")
+	cursor.execute("call create_temp();")
 	# print("criou tabela")
 	cursor.execute("SELECT @@sql_mode into @modeatual;")
 	cursor.execute("SET sql_mode = '';")
@@ -260,7 +218,7 @@ def seen():
 		for i in range(len(result)):
 			print("a: ", result[i][0:9])
 			result_sem_blob.append(result[i][0:9])
-			blobs.append(base64.b64encode(result[i][9]))
+			blobs.append(base64.b64encode(result[i][9])) 	
 		for i in range(len(result)):
 			result_sem_blob[i] = result_sem_blob[i] + (blobs[i],)
 			

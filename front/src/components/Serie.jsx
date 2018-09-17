@@ -24,7 +24,7 @@ class Serie extends Component {
     constructor(props){
     super(props);
     this.state = {
-        rating: this.props.film.score,
+        rating: 0,
         open: false,
         seen: false,
         imgStyle: null,
@@ -119,6 +119,20 @@ class Serie extends Component {
                             value={this.state.rating}
                             style={styles.stars}
                             onStarClick = {this.handleRating}
+                            
+                        />
+               </span>
+               <br></br>
+               <br></br>
+               <br></br>
+               <span>
+              Average Rating:
+              <StarRatingComponent 
+                            name="rate2" 
+                            starCount={5}
+                            value={this.props.film.avg_score}
+                            editing={false}
+                            style={styles.stars}
                             
                         />
                </span>
