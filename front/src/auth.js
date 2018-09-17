@@ -1,4 +1,3 @@
-
 export default window.auth = {
 		login:(name1, password1, callback)=>{
 				const baseUrl ='http://localhost:5000';
