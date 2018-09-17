@@ -63,7 +63,7 @@ class App extends Component {
   loginRequest = () => {
     auth.login(this.state.username, this.state.password,(result) => {
         if(result != 0){
-          console.log(result)
+          // console.log(result)
           localStorage.setItem("user", result);
           this.setState({auth: result, username: "", password: "", authConfirmed:true});
         }
@@ -95,7 +95,7 @@ class App extends Component {
   }
 
   onChangeMode = (event) => {
-    console.log(event.currentTarget.id)
+    // console.log(event.currentTarget.id)
     this.setState({mode: event.currentTarget.id})
     this.setState({menuShow: false})
     // this.setState({mode:})
@@ -243,7 +243,7 @@ renderApp(){
           </div>
   
           <div style={{padding:20, display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gridGap: '10px', gridAutoRows: 'minMax(100px, auto)'}}>
-            <MediaContainer search={this.state.search} genre={this.state.genre} update={this.state.updateComponent}/> 
+            <MediaContainer search={this.state.search} genre={this.state.genre} update={this.state.updateComponent} user={this.state.auth} mode={this.state.mode}/> 
           </div>
           </div>
       :
@@ -254,7 +254,7 @@ renderApp(){
           </div>
 
         <div style={{padding:20, display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gridGap: '10px', gridAutoRows: 'minMax(100px, auto)'}}>
-          <MediaContainer search={""} genre={""} update={this.state.updateComponent}/> 
+          <MediaContainer search={""} genre={""} update={this.state.updateComponent} user={this.state.auth} mode={this.state.mode}/> 
         </div>
         </div>
       

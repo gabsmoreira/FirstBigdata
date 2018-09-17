@@ -73,6 +73,23 @@ export default window.auth = {
 					callback(data)
 					})
 			})
+		},
+
+		myList:(user1, callback) => {
+			const baseUrl ='http://localhost:5000';
+			const headers = new Headers();
+			headers.append('Content-Type', 'application/json');
+			fetch(baseUrl + '/search', {
+					method: 'POST',
+					headers,
+					body: JSON.stringify({
+						user: user1
+					})
+			}).then((response) => {
+					var data = response.json().then((data) => {
+					callback(data)
+					})
+			})
 		}
 
 		
