@@ -42,10 +42,10 @@ INSERT INTO Tv_show(id, name, id_producer, number_of_seasons, avg_score, where_t
 INSERT INTO Tv_show(id, name, id_producer, number_of_seasons, avg_score, where_to_find, download_link, photo) VALUES(4,'Anatomia de Cinza', 2, 8, 0, 'HBO Go', 'www.baixaki.com/virus666', LOAD_FILE('/var/lib/mysql-files/greys.jpg') );
 INSERT INTO Tv_show(id, name, id_producer, number_of_seasons, avg_score, where_to_find, download_link, photo) VALUES(5,'Espelho Preto', 3, 5, 0, 'HBO Go', 'www.baixaki.com/virus666', LOAD_FILE('/var/lib/mysql-files/blackmirror.jpg') );
 INSERT INTO Tv_show(id, name, id_producer, number_of_seasons, avg_score, where_to_find, download_link, photo) VALUES(6,'Quimica do mal', 1, 1, 0, 'HBO Go', 'www.baixaki.com/virus666', LOAD_FILE('/var/lib/mysql-files/breakingbad.jpg') );
-INSERT INTO Tv_show(id, name, id_producer, number_of_seasons, avg_score, where_to_find, download_link, photo) VALUES(7,'O Mundo West', 1, 1, 0, 'HBO Go', 'www.baixaki.com/virus666', LOAD_FILE('/var/lib/mysql-files/breakingbad.jpg') );
-INSERT INTO Tv_show(id, name, id_producer, number_of_seasons, avg_score, where_to_find, download_link, photo) VALUES(8,'Amigos', 1, 1, 0, 'HBO Go', 'www.baixaki.com/virus666', LOAD_FILE('/var/lib/mysql-files/breakingbad.jpg') );
-INSERT INTO Tv_show(id, name, id_producer, number_of_seasons, avg_score, where_to_find, download_link, photo) VALUES(9,'Perdidos', 1, 1, 0, 'HBO Go', 'www.baixaki.com/virus666', LOAD_FILE('/var/lib/mysql-files/breakingbad.jpg') );
-INSERT INTO Tv_show(id, name, id_producer, number_of_seasons, avg_score, where_to_find, download_link, photo) VALUES(10,'Coisas Estranhas', 1, 1, 0, 'HBO Go', 'www.baixaki.com/virus666', LOAD_FILE('/var/lib/mysql-files/breakingbad.jpg') );
+INSERT INTO Tv_show(id, name, id_producer, number_of_seasons, avg_score, where_to_find, download_link, photo) VALUES(7,'O Mundo West', 1, 1, 0, 'HBO Go', 'www.baixaki.com/virus666', LOAD_FILE('/var/lib/mysql-files/west.jpg') );
+INSERT INTO Tv_show(id, name, id_producer, number_of_seasons, avg_score, where_to_find, download_link, photo) VALUES(8,'Amigos', 1, 1, 0, 'HBO Go', 'www.baixaki.com/virus666', LOAD_FILE('/var/lib/mysql-files/friends.jpg') );
+INSERT INTO Tv_show(id, name, id_producer, number_of_seasons, avg_score, where_to_find, download_link, photo) VALUES(9,'Perdidos', 1, 1, 0, 'HBO Go', 'www.baixaki.com/virus666', LOAD_FILE('/var/lib/mysql-files/lost.jpg') );
+INSERT INTO Tv_show(id, name, id_producer, number_of_seasons, avg_score, where_to_find, download_link, photo) VALUES(10,'Coisas Estranhas', 1, 1, 0, 'HBO Go', 'www.baixaki.com/virus666', LOAD_FILE('/var/lib/mysql-files/stranger.jpg') );
 
 INSERT INTO Watcher(id, name) VALUES(1, 'Graber');
 INSERT INTO Watcher(id, name) VALUES(2, 'Tirtop');
@@ -67,6 +67,10 @@ INSERT INTO Rel_Tv_show_Genre(id_genre, id_tv_show) VALUES(1, 3);
 INSERT INTO Rel_Tv_show_Genre(id_genre, id_tv_show) VALUES(1, 4);
 INSERT INTO Rel_Tv_show_Genre(id_genre, id_tv_show) VALUES(2, 5);
 INSERT INTO Rel_Tv_show_Genre(id_genre, id_tv_show) VALUES(3, 6);
+INSERT INTO Rel_Tv_show_Genre(id_genre, id_tv_show) VALUES(3, 7);
+INSERT INTO Rel_Tv_show_Genre(id_genre, id_tv_show) VALUES(2, 8);
+INSERT INTO Rel_Tv_show_Genre(id_genre, id_tv_show) VALUES(3, 9);
+INSERT INTO Rel_Tv_show_Genre(id_genre, id_tv_show) VALUES(3, 10);
 
 
 INSERT INTO Rel_Tv_show_Actor(id_tv_show, id_actor, role) VALUES(1, 1, 'Rico');
@@ -76,6 +80,10 @@ INSERT INTO Rel_Tv_show_Actor(id_tv_show, id_actor, role) VALUES(3, 4, 'Holt');
 INSERT INTO Rel_Tv_show_Actor(id_tv_show, id_actor, role) VALUES(4, 5, 'Dr. Cinza');
 INSERT INTO Rel_Tv_show_Actor(id_tv_show, id_actor, role) VALUES(5, 7, 'Um iphone');
 INSERT INTO Rel_Tv_show_Actor(id_tv_show, id_actor, role) VALUES(6, 6, 'Walter Branco');
+INSERT INTO Rel_Tv_show_Actor(id_tv_show, id_actor, role) VALUES(7, 6, 'Um cara x');
+INSERT INTO Rel_Tv_show_Actor(id_tv_show, id_actor, role) VALUES(8, 7, 'Um iphone');
+INSERT INTO Rel_Tv_show_Actor(id_tv_show, id_actor, role) VALUES(9, 6, 'Walter Branco');
+INSERT INTO Rel_Tv_show_Actor(id_tv_show, id_actor, role) VALUES(10, 6, 'Um cara x');
 
 
--- select avg(score) from Rel_Tv_show_Watcher where id_tvshow = <id_tvshow>
+commit;
