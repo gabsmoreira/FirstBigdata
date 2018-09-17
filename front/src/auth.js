@@ -79,11 +79,11 @@ export default window.auth = {
 			const baseUrl ='http://localhost:5000';
 			const headers = new Headers();
 			headers.append('Content-Type', 'application/json');
-			fetch(baseUrl + '/search', {
+			fetch(baseUrl + '/seen', {
 					method: 'POST',
 					headers,
 					body: JSON.stringify({
-						user: user1
+						id: user1
 					})
 			}).then((response) => {
 					var data = response.json().then((data) => {
