@@ -14,28 +14,34 @@ class MediaContainer extends Component {
 
   componentWillReceiveProps = (nextProps) => {
     console.log(nextProps)
-    this.props = nextProps
-    if(nextProps.update == true){
-      auth.search(this.props.search, this.props.genre, (result) => {
+    this.props =  nextProps
+    if(nextProps.mode ==  "Browse"){
+      if(nextProps.update == true){
+        auth.search(this.props.search, this.props.genre, (result) => {
+          this.setState({data: result})
+        })
+      }
+    }
+    else{
+      auth.myList(this.props.user, (result) => {
         this.setState({data: result})
       })
     }
+    
   }
 
   componentWillMount = () =>{
-    console.log(this.props.search, this.props.genre)
-    auth.getList((result) =>{
-      // console.log('A: ' + result[1])
-      // const json = {'id': result[0],
-      //               'name': result[1],
-      //               'idProducer': result[2],
-      //               'numberSeasons': result[3],
-      //               'rating': result[4],
-      //               'find': result[5],
-      //               'download': result[6]}
-      // console.log(typeof(result))  
-      this.setState({data: result})
-    })
+    // console.log("MODE" + this.props.mode)
+    if(this.props.mode === "Browse"){
+      auth.getList((result) =>{
+        this.setState({data: result})
+      })
+
+    }
+    else {
+      console.log("userrr " + this.props.user)
+    }
+    
   }
 
     render() {
