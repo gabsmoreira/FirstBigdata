@@ -211,19 +211,91 @@ def search():
 	
 	try:
 		result = cursor.fetchall()
-		print("a: ",result)
+		# print("a: ",result)
 		result_sem_blob = []
+		blobs = []
 		for i in range(len(result)):
-			print("a: ", result[i][0:7])
-
+			print("a: ", result[i][0:9])
 			result_sem_blob.append(result[i][0:9])
+			blobs.append(base64.b64encode(result[i][9]))
+		for i in range(len(result)):
+			result_sem_blob[i] = result_sem_blob[i] + (blobs[i],)
+			
 	except Exception as err:
 		print("[ERROR]: {}".format(err))
-		result_sem_blob = 0
+		result = 0
 	cursor.execute("SET sql_mode = @modeatual;")
 	return jsonify(result_sem_blob)
 
 
+@app.route('/seen', methods = ['POST'])
+def seen():
+	a = json.loads(request.data.decode("utf-8"))
+	cursor.execute("use fetchflix;")
+	# print("use fetflix")
+	cursor.execute("DROP TABLE IF EXISTS temp;")
+	# print("criou tabela")
+	cursor.execute("""
+	CREATE TEMPORARY TABLE temp
+	SELECT 
+		Tv_show.id, Tv_show.name, Producer.name as 'producer', group_concat(' ', Genre.name) as 'genres',
+		Tv_show.number_of_seasons, Tv_show.avg_score, Tv_show.where_to_find, Tv_show.download_link, Tv_show.photo
+	FROM
+		Producer JOIN
+		Tv_show ON Producer.id = Tv_show.id_producer JOIN
+		Rel_Tv_show_Genre ON Tv_show.id = Rel_Tv_show_Genre.id_tv_show JOIN
+		Genre ON Genre.id = Rel_Tv_show_Genre.id_genre
+
+	GROUP BY
+		Tv_show.id
+	;
+	""")
+	# print("criou tabela")
+	cursor.execute("SELECT @@sql_mode into @modeatual;")
+	cursor.execute("SET sql_mode = '';")
+	cursor.execute("DROP TABLE IF EXISTS temp2;")
+	cursor.execute("""
+					CREATE TEMPORARY TABLE temp2
+					SELECT 
+						temp.id, temp.name, temp.producer, temp.genres, group_concat(' ', Actor.name) as actors, temp.number_of_seasons, temp.avg_score, temp.where_to_find, temp.download_link, temp.photo
+
+					FROM
+						temp JOIN 
+    					Rel_Tv_show_Actor ON temp.id = Rel_Tv_show_Actor.id_tv_show JOIN
+    					Actor ON Rel_Tv_show_Actor.id_actor = Actor.id
+
+					GROUP BY
+						temp.id;""")
+	cursor.execute("""
+					SELECT 
+					temp2.id, temp2.name, temp2.producer, temp2.genres, temp2.actors, temp2.number_of_seasons, temp2.avg_score, temp2.where_to_find, temp2.download_link, temp2.photo, Watcher.id
+
+					FROM 
+						temp2 JOIN
+						Rel_Tv_show_Watcher ON temp2.id = Rel_Tv_show_Watcher.id_tv_show JOIN
+						Watcher ON Watcher.id = Rel_Tv_show_Watcher.id_watcher
+
+					WHERE
+						Watcher.id = %s
+					;""", (a['id']))
+	
+	try:
+		result = cursor.fetchall()
+		# print("a: ",result)
+		result_sem_blob = []
+		blobs = []
+		for i in range(len(result)):
+			print("a: ", result[i][0:9])
+			result_sem_blob.append(result[i][0:9])
+			blobs.append(base64.b64encode(result[i][9]))
+		for i in range(len(result)):
+			result_sem_blob[i] = result_sem_blob[i] + (blobs[i],)
+			
+	except Exception as err:
+		print("[ERROR]: {}".format(err))
+		result = 0
+	cursor.execute("SET sql_mode = @modeatual;")
+	return jsonify(result_sem_blob)
 
 
 

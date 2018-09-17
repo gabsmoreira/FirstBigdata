@@ -30,6 +30,11 @@ class MenuAppBar extends React.Component {
     option: "Browse"
   };
 
+  componentWillReceiveProps = (nextProps) => {
+    this.state.menuChoice = nextProps.menu
+  }
+
+
   handleChange = (event, checked) => {
     this.setState({ auth: checked });
   };
@@ -89,13 +94,13 @@ class MenuAppBar extends React.Component {
               }}
               open={openMenu}
               onClose={this.handleClose}>
-                <MenuItem onClick={this.handleChangeMenuChoice} id="Browse">Browse</MenuItem>
-                <MenuItem onClick={this.handleChangeMenuChoice} id="My List">My List</MenuItem>
+                <MenuItem onClick={this.props.onChangeMode} id="Browse">Browse</MenuItem>
+                <MenuItem onClick={this.props.onChangeMode} id="My List">My List</MenuItem>
               </Menu>
 
 
             <Typography variant="title" color="inherit" className={classes.flex}>
-              {this.state.option}
+              {this.props.mode}
             </Typography>
             {this.props.auth && (
               <div>

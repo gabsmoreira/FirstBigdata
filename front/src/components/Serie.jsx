@@ -7,7 +7,6 @@ import Typography from '@material-ui/core/Typography';
 import StarRatingComponent from 'react-star-rating-component';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import IconButton from '@material-ui/core/IconButton';
-import ResponsiveDialog from "./ResponsiveDialog"
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -22,14 +21,12 @@ class Serie extends Component {
     super(props);
     this.state = {
         rating: this.props.film.score,
-        logo: "",
         open: false
     }
   }
   
     componentWillMount = () => {
         console.log(this.props.film.name);
-        this.state.logo = "data:image/jpg;base64, " + this.props.film.image
   }
 
   handleRating = (value) =>{
@@ -122,7 +119,7 @@ class Serie extends Component {
       return(
           <div>
         <Card style={{height:"100%", width:"100%"}}>
-            <img src={this.state.logo} width="100%" onClick={this.onClickImage}/>
+            <img src={"data:image/jpg;base64, " + this.props.film.image} width="100%" onClick={this.onClickImage}/>
             {/* <img src={"data:image/jpg;base64," + i} /> */}
             {/* <CardContent>
             <Typography gutterBottom variant="headline" component="h2">
