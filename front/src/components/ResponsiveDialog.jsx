@@ -10,16 +10,13 @@ import withMobileDialog from '@material-ui/core/withMobileDialog';
 
 class ResponsiveDialog extends React.Component {
   state = {
-    open: this.props.open,
+    open: false,
   };
 
   componentWillReceiveProps = (nextProps) => {
-    this.props = nextProps
+    console.log(nextProps)
+    this.state.open = nextProps.open;
   }
-
-  // handleClickOpen = () => {
-  //   this.setState({ open: true });
-  // };
 
   handleClose = () => {
     this.setState({ open: false });
@@ -27,7 +24,7 @@ class ResponsiveDialog extends React.Component {
 
   render() {
     // const { fullScreen } = this.props;
-
+    console.log(this.props.data)
     return (
       <div>
         {/* <Button onClick={this.handleClickOpen}>Open responsive dialog</Button> */}
@@ -37,19 +34,25 @@ class ResponsiveDialog extends React.Component {
           onClose={this.handleClose}
           aria-labelledby="responsive-dialog-title"
         >
-          <DialogTitle id="responsive-dialog-title">{"Use Google's location service?"}</DialogTitle>
+          <DialogTitle id="responsive-dialog-title">{this.props.data.name}</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Let Google help apps determine location. This means sending anonymous location data to
-              Google, even when no apps are running.
+              <span>
+                Name: {this.props.data.name}
+              </span>
+              <br></br>
+              <span>
+                Actors: {this.props.data.score}
+              </span>
+              <br></br>
+              <span>
+                Producer: {this.props.data.idProducer}
+              </span>
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
-              Disagree
-            </Button>
             <Button onClick={this.handleClose} color="primary" autoFocus>
-              Agree
+              Close
             </Button>
           </DialogActions>
         </Dialog>

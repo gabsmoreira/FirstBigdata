@@ -8,6 +8,11 @@ import StarRatingComponent from 'react-star-rating-component';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import IconButton from '@material-ui/core/IconButton';
 import ResponsiveDialog from "./ResponsiveDialog"
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 
 
@@ -18,7 +23,7 @@ class Serie extends Component {
     this.state = {
         rating: this.props.film.score,
         logo: "",
-        moreInfo: false
+        open: false
     }
   }
   
@@ -55,12 +60,51 @@ class Serie extends Component {
   }
 
   onClickImage = () => {
-      this.setState({moreInfo: true})
+      this.setState({open: true})
 
   }
 
+  handleClose = () => {
+    this.setState({ open: false });
+  };
 
     render() {
+        const dialog = () => {
+            return  (
+                <Dialog
+                    // fullScreen={fullScreen}
+                    open={this.state.open}
+                    onClose={this.handleClose}
+                    aria-labelledby="responsive-dialog-title"
+                    >
+                    <DialogTitle id="responsive-dialog-title">{this.props.film.name}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                        <span>
+                            Name: {this.props.film.name}
+                        </span>
+                        <br></br>
+                        <span>
+                            Actors: {this.props.film.score}
+                        </span>
+                        <br></br>
+                        <span>
+                            Producer: {this.props.film.idProducer}
+                        </span>
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.handleClose} color="primary" autoFocus>
+                        Close
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            )
+        }
+
+
+
+
       const styles = {
         card: {
           maxWidth: 345,
@@ -80,10 +124,11 @@ class Serie extends Component {
         // window.URL.createObjectURL(i)
 
       return(
+          <div>
         <Card style={{height:"100%", width:"100%"}}>
             <img src={this.state.logo} width="100%" onClick={this.onClickImage}/>
             {/* <img src={"data:image/jpg;base64," + i} /> */}
-            <CardContent>
+            {/* <CardContent>
             <Typography gutterBottom variant="headline" component="h2">
                 {this.props.film.name}
             </Typography>
@@ -102,9 +147,11 @@ class Serie extends Component {
                 value={this.state.rating}
                 style={styles.stars}
                 onStarClick = {this.handleRating}
-              />
-              <ResponsiveDialog open={this.state.moreInfo}/>
-        </Card>
+              /> */}
+            </Card>
+            {dialog()}
+        </div>
+
       );
     }
 }
