@@ -42,11 +42,27 @@ class ResponsiveDialog extends React.Component {
               </span>
               <br></br>
               <span>
-                Actors: {this.props.data.score}
+                Genres: {this.props.data.genre}
               </span>
               <br></br>
               <span>
-                Producer: {this.props.data.idProducer}
+                Actors: {this.props.data.actors}
+              </span>
+              <br></br>
+              <span>
+                Producer: {this.props.data.producer}
+              </span>
+              <br></br>
+              <span>
+                Number of seasons: {this.props.data.seasons}
+              </span>
+              <br></br>
+              <span>
+                Where to find it (legally): {this.props.data.where}
+              </span>
+              <br></br>
+              <span>
+                Where to find it (not as legal): {this.props.data.link}
               </span>
             </DialogContentText>
           </DialogContent>

@@ -21,7 +21,7 @@ class ConnectionHelper:
 connection_options = {
 	'host': 'localhost',
 	'user': 'root',
-	'password': '1234',
+	'password': '160520',
 	'database': 'fetchflix',    
 }
 connection = pymysql.connect(**connection_options)
@@ -143,12 +143,16 @@ def tvshows():
 	
 	try:
 		result = cursor.fetchall()
-		print("a: ",result)
+		# print("a: ",result)
 		result_sem_blob = []
+		blobs = []
 		for i in range(len(result)):
-			print("a: ", result[i][0:7])
-
+			print("a: ", result[i][0:9])
 			result_sem_blob.append(result[i][0:9])
+			blobs.append(base64.b64encode(result[i][9]))
+		for i in range(len(result)):
+			result_sem_blob[i] = result_sem_blob[i] + (blobs[i],)
+			
 	except Exception as err:
 		print("[ERROR]: {}".format(err))
 		result = 0
@@ -197,8 +201,8 @@ def search():
 	GROUP BY
 		temp.id
 	HAVING 
-	LOCATE(%s, actors) > 0 OR
-	LOCATE(%s, name) > 0 AND
+	(LOCATE(%s, actors) > 0 OR
+	LOCATE(%s, name) > 0) AND
 	LOCATE(%s, genres) > 0;
 	
 

@@ -54,12 +54,14 @@ class MediaContainer extends Component {
           // console.log(show[7])
           const json = {'id': show[0],
                     'name': show[1],
-                    'idProducer': show[2],
-                    'numberSeasons': show[3],
-                    'score': show[4],
-                    'find': show[5],
-                    'link': show[6],
-                    'image': show[7]}
+                    'Producer': show[2],
+                    'genres': show[3],
+                    'actors': show[4],
+                    'seasons': show[5],
+                    'avg_score': show[6],
+                    'where': show[7],
+                    'link': show[8],
+                    'image': show[9]}
           return (
             <Serie film={json} />
           );

@@ -29,27 +29,7 @@ class Serie extends Component {
   
     componentWillMount = () => {
         console.log(this.props.film.name);
-        switch (this.props.film.name){
-            case "Rico e Morte":
-                this.state.logo = require("../img/rickandmorty.jpg")
-                break;
-            case "Jogo das Cadeiras":
-                this.state.logo = require("../img/got.jpg")
-                break;
-            case "98 brooklings":
-                this.state.logo = require("../img/99.jpg")
-                break;
-            case "Anatomia de Cinza":
-            this.state.logo = require("../img/greys.jpg")
-                break;
-            case "Espelho Preto":
-                this.state.logo = require("../img/blackmirror.jpg")
-                break;
-            case "Quimica do mal":
-                this.state.logo = require("../img/breakingbad.jpg")
-                break;
-
-      }
+        this.state.logo = "data:image/jpg;base64, " + this.props.film.image
   }
 
   handleRating = (value) =>{
@@ -81,16 +61,32 @@ class Serie extends Component {
                     <DialogContent>
                         <DialogContentText>
                         <span>
-                            Name: {this.props.film.name}
-                        </span>
-                        <br></br>
-                        <span>
-                            Actors: {this.props.film.score}
-                        </span>
-                        <br></br>
-                        <span>
-                            Producer: {this.props.film.idProducer}
-                        </span>
+                Name: {this.props.film.name}
+              </span>
+              <br></br>
+              <span>
+                Genres: {this.props.film.genres}
+              </span>
+              <br></br>
+              <span>
+                Actors: {this.props.film.actors}
+              </span>
+              <br></br>
+              <span>
+                Producer: {this.props.film.Producer}
+              </span>
+              <br></br>
+              <span>
+                Number of seasons: {this.props.film.seasons}
+              </span>
+              <br></br>
+              <span>
+                Where to find it (legally): {this.props.film.where}
+              </span>
+              <br></br>
+              <span>
+                Where to find it (not as legal): {this.props.film.link}
+              </span>
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
