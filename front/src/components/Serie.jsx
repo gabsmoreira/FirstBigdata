@@ -12,6 +12,10 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import Visibility from '@material-ui/icons/Visibility';
+import auth from '../auth';
+import Paper from '@material-ui/core/Paper';
 
 
 
@@ -21,12 +25,16 @@ class Serie extends Component {
     super(props);
     this.state = {
         rating: this.props.film.score,
-        open: false
+        open: false,
+        seen: false,
+        imgStyle: null,
+        hover: 4,
     }
   }
   
     componentWillMount = () => {
         console.log(this.props.film.name);
+        this.state.rating = 0;
   }
 
   handleRating = (value) =>{
@@ -38,12 +46,30 @@ class Serie extends Component {
 
   onClickImage = () => {
       this.setState({open: true})
+      auth.checkSeen(localStorage.getItem('user'), this.props.film.id, (result) =>{
+          this.setState({seen: result});
+      })
+
+  }
+
+  hasSeen = () =>{
+      this.setState({seen: true});
+      auth.hasSeen(localStorage.getItem('user'), this.props.film.id, this.state.rating, (result) =>{
+    })
 
   }
 
   handleClose = () => {
     this.setState({ open: false });
   };
+
+  handleHoverOn = () => {
+    this.setState({hover: 18})
+  }
+
+  handleHoverOff = () => {
+    this.setState({hover: 4})
+  }
 
     render() {
         const dialog = () => {
@@ -84,12 +110,33 @@ class Serie extends Component {
               <span>
                 Where to find it (not as legal): {this.props.film.link}
               </span>
-                        </DialogContentText>
+              <br></br>
+              <span>
+              Your Rating: 
+              <StarRatingComponent 
+                            name="rate1" 
+                            starCount={5}
+                            value={this.state.rating}
+                            style={styles.stars}
+                            onStarClick = {this.handleRating}
+                            
+                        />
+               </span>
+                </DialogContentText>
                     </DialogContent>
+                    
                     <DialogActions>
+                        {this.state.seen? <IconButton aria-label="Seen">
+                                            <Visibility/>
+                                          </IconButton> :
+                                        <IconButton aria-label="Seen" onClick={this.hasSeen}>
+                                        <VisibilityOff/>
+                                    </IconButton>}
+                    
                         <Button onClick={this.handleClose} color="primary" autoFocus>
                         Close
                         </Button>
+
                     </DialogActions>
                 </Dialog>
             )
@@ -112,36 +159,12 @@ class Serie extends Component {
         button: {
         }
       };
-        //const imagem = this.props.film.image.toString('utf-8')
-        // var i = new Blob(this.props.film.image, {type: "image/jpg;charset=ISO-8859-1"})
-        // window.URL.createObjectURL(i)
 
       return(
           <div>
-        <Card style={{height:"100%", width:"100%"}}>
-            <img src={"data:image/jpg;base64, " + this.props.film.image} width="100%" onClick={this.onClickImage}/>
-            {/* <img src={"data:image/jpg;base64," + i} /> */}
-            {/* <CardContent>
-            <Typography gutterBottom variant="headline" component="h2">
-                {this.props.film.name}
-            </Typography>
-            </CardContent>
-            <CardActions>
-            <Button size="small" color="primary">
-                Download Link
-            </Button>
-            </CardActions>
-            <IconButton color="primary" style={styles.button}  aria-label="Add to list">
-                <AddShoppingCartIcon />
-            </IconButton>
-            <StarRatingComponent 
-                name="rate1" 
-                starCount={5}
-                value={this.state.rating}
-                style={styles.stars}
-                onStarClick = {this.handleRating}
-              /> */}
-            </Card>
+            <Paper style={{height:"100%", width:"100%"}} elevation={this.state.hover}>
+            <img src={"data:image/jpg;base64, " + this.props.film.image} width="100%" height="100%" onClick={this.onClickImage} onMouseOver={this.handleHoverOn} onMouseOut={this.handleHoverOff}/>    
+            </Paper>
             {dialog()}
         </div>
 

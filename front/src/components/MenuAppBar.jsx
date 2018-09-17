@@ -95,7 +95,7 @@ class MenuAppBar extends React.Component {
               open={openMenu}
               onClose={this.handleClose}>
                 <MenuItem onClick={this.props.onChangeMode} id="Browse">Browse</MenuItem>
-                <MenuItem onClick={this.props.onChangeMode} id="My List">My List</MenuItem>
+                <MenuItem onClick={this.props.onChangeMode} id="Seen">Seen</MenuItem>
               </Menu>
 
 

@@ -90,6 +90,43 @@ export default window.auth = {
 					callback(data)
 					})
 			})
+		},
+
+		checkSeen:(user, film, callback) => {
+			const baseUrl ='http://localhost:5000';
+			const headers = new Headers();
+			headers.append('Content-Type', 'application/json');
+			fetch(baseUrl + '/checkSeen', {
+					method: 'POST',
+					headers,
+					body: JSON.stringify({
+						id_user: user,
+						id_film: film
+					})
+			}).then((response) => {
+					var data = response.json().then((data) => {
+					callback(data)
+					})
+			})
+		},
+
+		hasSeen:(user, film, rating, callback) => {
+			const baseUrl ='http://localhost:5000';
+			const headers = new Headers();
+			headers.append('Content-Type', 'application/json');
+			fetch(baseUrl + '/hasSeen', {
+					method: 'POST',
+					headers,
+					body: JSON.stringify({
+						id_user: user,
+						id_film: film,
+						score: rating
+					})
+			}).then((response) => {
+					
+				callback(response)
+					
+			})
 		}
 
 		

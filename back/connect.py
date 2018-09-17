@@ -70,33 +70,6 @@ def login():
 
 
 
-# @app.route('/tvshows', methods = ['GET'])
-# def tvshows():
-# 	print('[BACKEND] GET Tvshows')
-	
-# 	cursor.execute("SELECT * FROM Tv_show")
-# 	try:
-# 		result = cursor.fetchall()
-# 		# print("a: ",result)
-# 		result_sem_blob = []
-# 		blobs = []
-# 		for i in range(len(result)):
-# 			print("a: ", result[i][0:7])
-# 			# blobs.append(base64.b64encode(result[i][7]))
-# 			# blobs.append(json.dumps(result[i][7].decode("utf-16")))
-# 			# blobs.append(io.BytesIO(result[i][7]))
-# 			result_sem_blob.append(result[i][0:7])
-# 			# write_file(result[i][7].decode("utf-8"), filename)
-# 		# print(blobs[0])
-
-# 		# for i in range(len(result)):
-# 		# 	result_sem_blob[i] = result_sem_blob[i] + (blobs[i],)
-		
-# 	except Exception as err:
-# 		print("[ERROR]: {}".format(err))
-# 		result = 0
-# 	return jsonify(result_sem_blob)
-
 @app.route('/tvshows', methods = ['GET'])
 def tvshows():
 	print('[BACKEND] GET Tvshows')
@@ -298,10 +271,22 @@ def seen():
 	return jsonify(result_sem_blob)
 
 
+@app.route('/checkSeen', methods = ['POST'])
+def checkSeen():
+	a = json.loads(request.data.decode("utf-8"))
+	cursor.execute("use fetchflix;")
+	cursor.execute("select count(*) from Rel_Tv_show_Watcher where id_watcher = %s and id_tv_show = %s", (a['id_user'], a['id_film']))
+	result = cursor.fetchall()
+	
+	return jsonify(result[0][0])
 
-
-
-
+@app.route('/hasSeen', methods = ['POST'])
+def hasSeen():
+	a = json.loads(request.data.decode("utf-8"))
+	cursor.execute("use fetchflix;")
+	cursor.execute("insert into Rel_Tv_show_Watcher (id_watcher, id_tv_show, score) values(%s, %s, %s)", (a['id_user'], a['id_film'], a['score']))
+	result = cursor.fetchall()
+	return jsonify("TOP")
 
 
 app.run()
