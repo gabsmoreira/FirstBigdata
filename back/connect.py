@@ -31,9 +31,6 @@ cursor = connection.cursor()
 
 app = Flask(__name__)
 
-# def write_file(data, filename):
-#     with open(filename, 'wb') as f:
-#         f.write(data)
 
 @app.route('/')
 def hello_world():
