@@ -170,78 +170,95 @@ def search():
 	return jsonify(result_sem_blob)
 
 
-@app.route('/seen', methods = ['POST'])
+@app.route('/seen', methods = ['GET', 'POST', 'PUT'])
 def seen():
-	a = json.loads(request.data.decode("utf-8"))
-	cursor.execute("use fetchflix;")
-	# print("use fetflix")
-	#cursor.execute("DROP TABLE IF EXISTS temp;")
-	# print("criou tabela")
-	cursor.execute("call create_temp();")
-	# print("criou tabela")
-	cursor.execute("SELECT @@sql_mode into @modeatual;")
-	cursor.execute("SET sql_mode = '';")
-	cursor.execute("DROP TABLE IF EXISTS temp2;")
-	cursor.execute("""
-					CREATE TEMPORARY TABLE temp2
-					SELECT 
-						temp.id, temp.name, temp.producer, temp.genres, group_concat(' ', Actor.name) as actors, temp.number_of_seasons, temp.avg_score, temp.where_to_find, temp.download_link, temp.photo
+	if  request.method == 'GET':
+		id = request.args.get('id')
+		cursor.execute("use fetchflix;")
+		# print("use fetflix")
+		#cursor.execute("DROP TABLE IF EXISTS temp;")
+		# print("criou tabela")
+		cursor.execute("call create_temp();")
+		# print("criou tabela")
+		cursor.execute("SELECT @@sql_mode into @modeatual;")
+		cursor.execute("SET sql_mode = '';")
+		cursor.execute("DROP TABLE IF EXISTS temp2;")
+		cursor.execute("""
+						CREATE TEMPORARY TABLE temp2
+						SELECT 
+							temp.id, temp.name, temp.producer, temp.genres, group_concat(' ', Actor.name) as actors, temp.number_of_seasons, temp.avg_score, temp.where_to_find, temp.download_link, temp.photo
 
-					FROM
-						temp JOIN 
-    					Rel_Tv_show_Actor ON temp.id = Rel_Tv_show_Actor.id_tv_show JOIN
-    					Actor ON Rel_Tv_show_Actor.id_actor = Actor.id
+						FROM
+							temp JOIN 
+							Rel_Tv_show_Actor ON temp.id = Rel_Tv_show_Actor.id_tv_show JOIN
+							Actor ON Rel_Tv_show_Actor.id_actor = Actor.id
 
-					GROUP BY
-						temp.id;""")
-	cursor.execute("""
-					SELECT 
-					temp2.id, temp2.name, temp2.producer, temp2.genres, temp2.actors, temp2.number_of_seasons, temp2.avg_score, temp2.where_to_find, temp2.download_link, temp2.photo, Watcher.id
+						GROUP BY
+							temp.id;""")
+		cursor.execute("""
+						SELECT 
+						temp2.id, temp2.name, temp2.producer, temp2.genres, temp2.actors, temp2.number_of_seasons, temp2.avg_score, temp2.where_to_find, temp2.download_link, temp2.photo, Watcher.id
 
-					FROM 
-						temp2 JOIN
-						Rel_Tv_show_Watcher ON temp2.id = Rel_Tv_show_Watcher.id_tv_show JOIN
-						Watcher ON Watcher.id = Rel_Tv_show_Watcher.id_watcher
+						FROM 
+							temp2 JOIN
+							Rel_Tv_show_Watcher ON temp2.id = Rel_Tv_show_Watcher.id_tv_show JOIN
+							Watcher ON Watcher.id = Rel_Tv_show_Watcher.id_watcher
 
-					WHERE
-						Watcher.id = %s
-					;""", (a['id']))
-	
-	try:
+						WHERE
+							Watcher.id = %s
+						;""", (id))
+		
+		try:
+			result = cursor.fetchall()
+			# print("a: ",result)
+			result_sem_blob = []
+			blobs = []
+			for i in range(len(result)):
+				print("a: ", result[i][0:9])
+				result_sem_blob.append(result[i][0:9])
+				blobs.append(base64.b64encode(result[i][9])) 	
+			for i in range(len(result)):
+				result_sem_blob[i] = result_sem_blob[i] + (blobs[i],)
+				
+		except Exception as err:
+			print("[ERROR]: {}".format(err))
+			result = 0
+		cursor.execute("SET sql_mode = @modeatual;")
+		return jsonify(result_sem_blob)
+	elif request.method == "POST":
+		a = json.loads(request.data.decode("utf-8"))
+		cursor.execute("use fetchflix;")
+		cursor.execute("select count(*) from Rel_Tv_show_Watcher where id_watcher = %s and id_tv_show = %s", (a['id_user'], a['id_film']))
 		result = cursor.fetchall()
-		# print("a: ",result)
-		result_sem_blob = []
-		blobs = []
-		for i in range(len(result)):
-			print("a: ", result[i][0:9])
-			result_sem_blob.append(result[i][0:9])
-			blobs.append(base64.b64encode(result[i][9])) 	
-		for i in range(len(result)):
-			result_sem_blob[i] = result_sem_blob[i] + (blobs[i],)
-			
-	except Exception as err:
-		print("[ERROR]: {}".format(err))
-		result = 0
-	cursor.execute("SET sql_mode = @modeatual;")
-	return jsonify(result_sem_blob)
-
-
-@app.route('/checkSeen', methods = ['POST'])
-def checkSeen():
-	a = json.loads(request.data.decode("utf-8"))
-	cursor.execute("use fetchflix;")
-	cursor.execute("select count(*) from Rel_Tv_show_Watcher where id_watcher = %s and id_tv_show = %s", (a['id_user'], a['id_film']))
-	result = cursor.fetchall()
+		
+		return jsonify(result[0][0])
+	elif request.method == "PUT":
+		a = json.loads(request.data.decode("utf-8"))
+		cursor.execute("use fetchflix;")
+		cursor.execute("insert into Rel_Tv_show_Watcher (id_watcher, id_tv_show, score) values(%s, %s, %s)", (a['id_user'], a['id_film'], a['score']))
+		result = cursor.fetchall()
+		return jsonify("TOP")
 	
-	return jsonify(result[0][0])
 
-@app.route('/hasSeen', methods = ['POST'])
-def hasSeen():
-	a = json.loads(request.data.decode("utf-8"))
-	cursor.execute("use fetchflix;")
-	cursor.execute("insert into Rel_Tv_show_Watcher (id_watcher, id_tv_show, score) values(%s, %s, %s)", (a['id_user'], a['id_film'], a['score']))
-	result = cursor.fetchall()
-	return jsonify("TOP")
+		
+
+
+# @app.route('/checkSeen', methods = ['POST'])
+# def checkSeen():
+# 	a = json.loads(request.data.decode("utf-8"))
+# 	cursor.execute("use fetchflix;")
+# 	cursor.execute("select count(*) from Rel_Tv_show_Watcher where id_watcher = %s and id_tv_show = %s", (a['id_user'], a['id_film']))
+# 	result = cursor.fetchall()
+	
+# 	return jsonify(result[0][0])
+
+# @app.route('/hasSeen', methods = ['POST'])
+# def hasSeen():
+# 	a = json.loads(request.data.decode("utf-8"))
+# 	cursor.execute("use fetchflix;")
+# 	cursor.execute("insert into Rel_Tv_show_Watcher (id_watcher, id_tv_show, score) values(%s, %s, %s)", (a['id_user'], a['id_film'], a['score']))
+# 	result = cursor.fetchall()
+# 	return jsonify("TOP")
 
 
 app.run()
