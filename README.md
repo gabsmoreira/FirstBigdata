@@ -5,7 +5,7 @@
 
 ## How to run
 
-### Preparing yout enviroment
+### Preparing your enviroment
 Copy the content of ```/img``` folder to:
 
 **Linux:** ```/var/lib/mysql-files```
