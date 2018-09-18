@@ -83,4 +83,37 @@ CREATE TABLE Rel_Tv_show_Actor(
 
 
 
+DROP TRIGGER IF EXISTS upadate_average;
+DELIMITER //
+
+CREATE TRIGGER update_average AFTER INSERT ON Rel_Tv_show_Watcher
+for each row
+begin
+SELECT AVG(score) INTO @media FROM Rel_Tv_show_Watcher WHERE id_tv_show = new.id_tv_show;
+UPDATE Tv_show SET avg_score = @media WHERE id = new.id_tv_show;
+
+end//
+
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS create_temp;
+DELIMITER //
+CREATE PROCEDURE create_temp()
+BEGIN
+DROP TABLE IF EXISTS temp;
+CREATE TEMPORARY TABLE temp
+SELECT 
+	Tv_show.id, Tv_show.name, Producer.name as 'producer', group_concat(' ', Genre.name) as 'genres', Tv_show.number_of_seasons, Tv_show.avg_score, Tv_show.where_to_find, Tv_show.download_link, Tv_show.photo
+FROM
+	Producer JOIN
+	Tv_show ON Producer.id = Tv_show.id_producer JOIN
+    Rel_Tv_show_Genre ON Tv_show.id = Rel_Tv_show_Genre.id_tv_show JOIN
+    Genre ON Genre.id = Rel_Tv_show_Genre.id_genre
+    
+GROUP BY
+	Tv_show.id
+;
+END//
+DELIMITER ;
+
 
