@@ -1,6 +1,6 @@
 # FirstBigdata
 
-![example](https://raw.githubusercontent.com/gabsmoreira/FirstBigdata/tree/master/Diagrama/top.png)
+![example](https://github.com/gabsmoreira/FirstBigdata/blob/master/Diagrama/top.png?raw=true)
 
 
 ## How to run
