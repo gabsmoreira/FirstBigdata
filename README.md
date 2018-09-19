@@ -28,6 +28,7 @@ Go to ```/back ``` and run ```python connect.py ```.
 
 ### Run frontend
 Turn CORS (Allow-Control-Allow-Origin) on. 
+
 Go to ```/front ``` and run ```yarn install ``` to install dependencies.
 
 Then run ```yarn  start```. A webpage should pop in.
