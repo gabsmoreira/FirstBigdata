@@ -38,6 +38,24 @@ export default window.auth = {
 			})
 	},
 
+	deleteUser:(name1, callback) => {
+		const baseUrl ='http://localhost:5000/users?';
+		let params = new URLSearchParams(Object.entries({
+			username: name1,
+		}))
+
+		fetch(baseUrl + params, {
+				method: 'DELETE',
+		}).then((response) => {
+			console.log(response);
+				
+						// console.log(data)
+			callback(response)
+		})
+},
+
+	
+
 	getList:(callback) => {			
 		const baseUrl ='http://localhost:5000';
 		fetch(baseUrl + '/tvshows', {

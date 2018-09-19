@@ -126,7 +126,7 @@ class MenuAppBar extends React.Component {
                   open={open}
                   onClose={this.handleClose}
                 >
-                  <MenuItem onClick={this.handleClose}>Profile</MenuItem>
+                  <MenuItem id='Profile' onClick={this.props.onChangeMode}>Profile</MenuItem>
                   <MenuItem onClick={this.props.handleLogout}>Logout</MenuItem>
                 </Menu>
               </div>

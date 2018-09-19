@@ -24,10 +24,10 @@ Run ```insertData.sql``` to insert data into the database.
 ### Run backend
 Go to ```/back ``` and run ```python connect.py ```.
 
-Turn CORS (Allow-Control-Allow-Origin) on. 
 
 
 ### Run frontend
+Turn CORS (Allow-Control-Allow-Origin) on. 
 Go to ```/front ``` and run ```yarn install ``` to install dependencies.
 
 Then run ```yarn  start```. A webpage should pop in.

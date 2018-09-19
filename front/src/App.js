@@ -54,10 +54,17 @@ class App extends Component {
     if(this.state.confirmed_password === this.state.password){
       auth.register(this.state.username, this.state.password,(result) => {
           localStorage.setItem("user", result);
-          this.setState({auth:result, username: "", password: "", confirm_password: "", authConfirmed:true});
+          this.setState({auth:result, password: "", confirm_password: "", authConfirmed:true});
 
       });
     }
+  }
+
+  deleteUser = () => {
+    auth.deleteUser(this.state.username, (result) => {
+      console.log("deleted user");
+    });
+    this.setState({auth: null, authConfirmed: false})
   }
 
   loginRequest = () => {
@@ -65,7 +72,7 @@ class App extends Component {
         if(result != 0){
           // console.log(result)
           localStorage.setItem("user", result);
-          this.setState({auth: result, username: "", password: "", authConfirmed:true});
+          this.setState({auth: result, password: "", authConfirmed:true});
         }
     });
   }
@@ -155,7 +162,9 @@ class App extends Component {
           <Button  variant="contained" color="primary" style={styleButton} onClick={this.registerRequest}>Register</Button>
         </Paper>
       )
-    }
+    };
+
+     
 
     const style = {
       backgroundColor: grey50,
@@ -203,7 +212,7 @@ renderApp(){
   return(
     <div >
       <MenuAppBar auth={this.state.authConfirmed} menu={this.state.menuShow} handleLogout={this.handleLogout} mode={this.state.mode} onChangeMode={this.onChangeMode}/>
-      {this.state.mode === "Browse"?
+      {/* {this.state.mode === "Browse"?
         <div>
         <div style={{marginLeft:'5%',
           marginRight:'5%'}}>
@@ -261,13 +270,96 @@ renderApp(){
       
       
       
-      }
+      } */}
       
       
 
       </div>
     );
   }
+
+   app (){
+    if(this.state.mode === 'Browse'){
+      return(
+        <div >
+          <MenuAppBar auth={this.state.authConfirmed} menu={this.state.menuShow} handleLogout={this.handleLogout} mode={this.state.mode} onChangeMode={this.onChangeMode}/>
+        <div>
+        <div style={{marginLeft:'5%',
+          marginRight:'5%'}}>
+          <TextField
+            id="error"
+            placeholder="Search"
+            value={this.state.search}
+            onChange={this.handleChange('search')}
+            style={{marginRight: 50}}
+            // wish = {plz no two lines, thx}
+          />
+          <TextField
+            id="select-currency-native"
+            select
+            value={this.state.genre}
+            onChange={this.handleChange('genre')}
+            SelectProps={{
+              native: true,
+            }}
+            helperText="Please select the genre"
+            margin="normal"
+            style={{height: "50%"}}
+            >
+            {genres.map(option => (
+              <option key={option.value} value={option.value}>
+                {option.value}
+              </option>
+            ))}
+          </TextField>
+  
+          <Button variant="contained" color="primary" style={{marginLeft:"2%"}} onClick={this.searchShows} >
+            Search
+          </Button>
+          </div>
+  
+          <div style={{padding:20, display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gridGap: '10px', gridAutoRows: 'minMax(100px, auto)'}}>
+            <MediaContainer search={this.state.search} genre={this.state.genre} update={this.state.updateComponent} user={this.state.auth} mode={this.state.mode}/> 
+          </div>
+          </div>
+          </div>
+
+      )
+    }
+    else if(this.state.mode === 'Profile'){
+      return(
+        <div style={{alignContent:'center', justifyContent:'center'}}>
+          <MenuAppBar auth={this.state.authConfirmed} menu={this.state.menuShow} handleLogout={this.handleLogout} mode={this.state.mode} onChangeMode={this.onChangeMode}/>
+          {/* <Paper style={{backgroundColor: grey50, textAlign: 'center', marginTop: '10%', width:200, height:200}} zDepth={2}> */}
+         <span>Username: {this.state.username}</span>
+         <br></br>
+         <span>ID: {this.state.auth}</span>
+         <br></br>
+         <Button variant="contained" color="secondary" style={{marginLeft:"2%"}} onClick={this.deleteUser}>
+          DELETE BUTTON
+         </Button>
+         {/* </Paper> */}
+        </div>
+      )
+    }
+    else{
+      return(
+        <div >
+          <MenuAppBar auth={this.state.authConfirmed} menu={this.state.menuShow} handleLogout={this.handleLogout} mode={this.state.mode} onChangeMode={this.onChangeMode}/>
+        <div>
+        <div style={{marginLeft:'5%',
+          marginRight:'5%'}}>
+
+        </div>
+
+      <div style={{padding:20, display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gridGap: '10px', gridAutoRows: 'minMax(100px, auto)'}}>
+        <MediaContainer search={""} genre={""} update={this.state.updateComponent} user={this.state.auth} mode={this.state.mode}/> 
+      </div>
+      </div>
+      </div>
+      )
+    }
+  };
   
   render(){
     if(this.state.auth === null || this.state.auth === 'undefined'){
@@ -276,7 +368,7 @@ renderApp(){
         );
       }
       else{
-        return(this.renderApp());
+        return(this.app());
       }
   }
 }

@@ -21,7 +21,7 @@ class ConnectionHelper:
 connection_options = {
 	'host': 'localhost',
 	'user': 'root',
-	'password': '160520',
+	'password': '1234',
 	'database': 'fetchflix',    
 }
 connection = pymysql.connect(**connection_options)
@@ -36,7 +36,7 @@ app = Flask(__name__)
 def hello_world():
 	return 'Hello, World!'
 
-@app.route('/users', methods = ['GET', 'POST'])
+@app.route('/users', methods = ['GET', 'POST', 'DELETE'])
 def user():
 	if  request.method == 'GET':
 		print('[BACKEND]: /users GET ')
@@ -51,6 +51,13 @@ def user():
 		db.run("COMMIT")
 		cursor.execute("SELECT id FROM Watcher WHERE name=%s AND password=%s LIMIT 1", (a["username"], a["password"]))
 		return jsonify(cursor.fetchall()[0][0])
+	if request.method == 'DELETE':
+		username = request.args.get('username')
+		cursor.execute("SELECT id from Watcher WHERE name=%s LIMIT 1", (username))
+		id = cursor.fetchall()[0][0]
+		db.run("DELETE FROM Watcher WHERE id=%s", id)
+		db.run("COMMIT")
+		
 
 @app.route('/login', methods = ['POST'])
 def login():
